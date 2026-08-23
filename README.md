@@ -79,7 +79,26 @@ This policy ensures that any device speaking `openphase.v1` can interoperate wit
 
 Mozilla Public License 2.0 (MPL-2.0)
 
-See [LICENSE](LICENSE) for full text and [PATENTS.md](PATENTS.md) for patent grant details.
+See [LICENSE](LICENSE) for full text.
+
+**What that means in practice:**
+
+- **Changes to the protocol stay open.** If you modify a `.proto` file in this
+  repository, that modified file must be made available under MPL-2.0.
+- **Generated code is yours.** Output from `protoc` or any other generator run
+  against these definitions is not Covered Software and carries no MPL
+  obligation. Extend the generated types however you like, under whatever
+  license you like.
+- **Your own definitions are yours.** A `.proto` file you author in your own
+  package that imports or references `openphase.v1` types is your work, not a
+  modification of ours.
+- **Your application stays yours.** You can build proprietary software on
+  OpenPhase — controller firmware, ATMS platforms, analytics dashboards —
+  without opening your own source. MPL-2.0 is file-level copyleft: it reaches
+  the files you modify here, not the code that uses them.
+
+The intent is for OpenPhase to remain a shared, extensible, versionable standard
+for the traffic signal industry, so no single vendor can fork it closed.
 
 ---
 

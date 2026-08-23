@@ -53,7 +53,3 @@ Two batch wrappers exist for transport efficiency:
 ## Versioning
 
 `openphase.v1` is the current stable version. Per the breaking-change policy in the [README](../README.md), additions are non-breaking; field renumbering or semantic changes require a new version folder (`openphase/v2/`). Modified protocol files must be made available under MPL 2.0.
-
-## Patent notice
-
-The protocol and its implementation are protected by patents (PPA filed 2026-03-24). See [PATENTS.md](../PATENTS.md) for grant terms.

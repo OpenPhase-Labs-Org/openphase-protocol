@@ -10,7 +10,7 @@ If your name should appear here and doesn't, open a PR adding it.
 
 ## IP holder
 
-- **Heritage Grid, LLC** — Copyright holder and patent grantor. Owns the OpenPhase IP and licenses it to OpenPhase Labs, LLC for project operation. See [LICENSE](LICENSE) and [PATENTS.md](PATENTS.md) for terms.
+- **Heritage Grid, LLC** — Copyright holder. Owns the OpenPhase IP and licenses it to OpenPhase Labs, LLC for project operation. See [LICENSE](LICENSE) for terms.
 
 ## Authors
 

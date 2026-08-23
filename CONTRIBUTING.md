@@ -20,7 +20,7 @@ If you want to contribute to a *consumer* of OpenPhase (e.g., the TSIGMA referen
 - [Documentation](#documentation)
 - [Branch and commit workflow](#branch-and-commit-workflow)
 - [Pull request checklist](#pull-request-checklist)
-- [License and patent grant](#license-and-patent-grant)
+- [License](#license)
 
 ---
 
@@ -105,7 +105,7 @@ Adding an entirely new schema file is rare and warrants discussion before code. 
 Once consensus is reached, the new file should:
 
 - Use `package openphase.v1;`
-- Include the standard MPL header + patent notice (copy from any existing proto)
+- Include the standard MPL header (copy from any existing proto)
 - Have a corresponding documentation file in `docs/<filename>.md`
 - Be listed in `README.md` and `docs/OVERVIEW.md`
 
@@ -188,15 +188,14 @@ Before opening a PR, verify:
 
 ---
 
-## License and patent grant
+## License
 
-OpenPhase is licensed under the Mozilla Public License 2.0 (MPL-2.0) — see [LICENSE](LICENSE). The protocol is also covered by patents (PPA filed 2026-03-24); see [PATENTS.md](PATENTS.md) for the grant terms.
+OpenPhase is licensed under the Mozilla Public License 2.0 (MPL-2.0) — see [LICENSE](LICENSE).
 
 By submitting a contribution you agree to:
 
 1. License your contribution under the MPL-2.0.
-2. Grant the patent rights described in [PATENTS.md](PATENTS.md) to all downstream users of OpenPhase.
-3. Confirm that you have the right to make the contribution (e.g., your employer's IP policy permits it, or you are the sole author).
+2. Confirm that you have the right to make the contribution (e.g., your employer's IP policy permits it, or you are the sole author).
 
 There is no separate Contributor License Agreement (CLA) at this time. If we add one before the project's first stable tag, contributors will be notified.
 
