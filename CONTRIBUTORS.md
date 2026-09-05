@@ -6,15 +6,11 @@ If your name should appear here and doesn't, open a PR adding it.
 
 ## Maintainers
 
-- **OpenPhase Labs, LLC** — Protocol stewardship, project governance, releases. Maintains OpenPhase under license from Heritage Grid, LLC. Contact via the OpenPhase Labs governance mailbox.
-
-## IP holder
-
-- **Heritage Grid, LLC** — Copyright holder. Owns the OpenPhase IP and licenses it to OpenPhase Labs, LLC for project operation. See [LICENSE](LICENSE) for terms.
+- **OpenPhase Labs, LLC** — Protocol stewardship, project governance, releases. Contact via the OpenPhase Labs governance mailbox.
 
 ## Authors
 
-- *Initial protocol design, IHR/NTCIP/J2735 schema mapping, gRPC ingestion contract, reference documentation.*
+- **Jim Sloan** <jim@openphase-labs.com> — Initial protocol design, IHR/NTCIP/J2735 schema mapping, gRPC ingestion contract, reference documentation.
 
 ## Contributors
 

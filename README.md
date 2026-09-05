@@ -104,4 +104,4 @@ for the traffic signal industry, so no single vendor can fork it closed.
 
 **Document Version**: 1.2
 **Last Updated**: 2026-04-22
-**Maintainer**: OpenPhase Labs, LLC (under license from Heritage Grid, LLC, the IP holder)
+**Maintainer**: OpenPhase Labs, LLC
