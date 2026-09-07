@@ -65,7 +65,7 @@ All time fields are milliseconds.
 | `next_state` | 5 | MovementEvent | Deterministic next state (optional) |
 | `next_duration` | 6 | uint32 | Expected duration of next state (ms) |
 
-`TimingConfidence`: `UNAVAILABLE` (free/adaptive), `LOW` (±5s), `MEDIUM` (±2s), `HIGH` (±500ms, coordinated).
+`TimingConfidence`: `TIMING_CONFIDENCE_UNSPECIFIED` (producer didn't set it), `TIMING_UNAVAILABLE` (free/adaptive), `TIMING_LOW` (±5s), `TIMING_MEDIUM` (±2s), `TIMING_HIGH` (±500ms, coordinated).
 
 ## `SignalColor` — quick-check color
 

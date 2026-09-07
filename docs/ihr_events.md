@@ -131,7 +131,7 @@ The integer value of every `EventType` constant equals its Indiana Hi-Res event 
 | 150 | `EVENT_COORD_CYCLE_STATE_CHANGE` | `CoordCycleState` enum value |
 | 151 | `EVENT_COORD_PHASE_YIELD_POINT` | phase # |
 
-`CoordCycleState` enum (param values for event 150): `FREE`, `IN_STEP`, `TRANSITION_ADD`, `TRANSITION_SUBTRACT`, `TRANSITION_DWELL`, `LOCAL_ZERO`, `BEGIN_PICKUP`.
+`CoordCycleState` enum (param values for event 150): `COORD_CYCLE_STATE_FREE` (0), `COORD_CYCLE_STATE_IN_STEP` (1), `COORD_CYCLE_STATE_TRANSITION_ADD` (2), `COORD_CYCLE_STATE_TRANSITION_SUBTRACT` (3), `COORD_CYCLE_STATE_TRANSITION_DWELL` (4), `COORD_CYCLE_STATE_LOCAL_ZERO` (5), `COORD_CYCLE_STATE_BEGIN_PICKUP` (6).
 
 ### Cabinet / System Events (171-185)
 
