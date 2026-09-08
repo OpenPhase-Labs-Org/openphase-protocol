@@ -6,6 +6,14 @@ OpenPhase is an open-source protocol specification for modern traffic signal inf
 
 ---
 
+## Status
+
+**Released. `openphase.v1` is stable as of 1.0.0 (2026-09-07).**
+
+The schemas in `openphase/v1/` are now fixed under the [Breaking Change Policy](#breaking-change-policy): additions are welcome and non-breaking, but modifying or removing an existing field, renaming a message, or changing an enum value requires `openphase/v2/`. Implementations should pin to a release tag rather than tracking the default branch.
+
+---
+
 ## Overview
 
 - Open protocol for traffic signal telemetry, control, and analytics
