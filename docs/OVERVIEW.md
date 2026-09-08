@@ -16,6 +16,7 @@ All messages live in the `openphase.v1` package. Every `.proto` file in `openpha
 | [security.proto](security.md) | Alerts | On-event | `SecurityAlert` (spoof detection, MMU conflict, intrusion) |
 | [discovery.proto](discovery.md) | Self-learning | On-event | `DiscoveryPacket` for unmapped SDLC bit transitions |
 | [faults.proto](faults.md) | Snapshots | On-fault | `FaultSnapshot` capturing event history + state at fault time |
+| [ingestion.proto](ingestion.md) | gRPC push | Carries the wrapper | `IngestionService` — device-to-server push of `IntersectionUpdate` / `CompactEventBatch`; `PublishAck` |
 
 ## Carrier model
 
