@@ -7,10 +7,12 @@
 // per Sturdevant et al., "Indiana Traffic Signal Hi Resolution Data Logger
 // Enumerations," INDOT/Purdue, November 2012 (doi:10.4231/K4RN35SH).
 //
-// Per the IHR spec, an event log entry is exactly two 8-bit fields:
-// Event Code (0-255) and Parameter (0-255). Intersection identifier and
-// timestamp are carried by the outer envelope (`IntersectionUpdate` for
-// single events, `CompactEventBatch` for batched transport).
+// The IHR spec defines an event log entry as two 8-bit fields: Event Code
+// (0-255) and Parameter (0-255). Deployed equipment does not honour that
+// range, so this schema carries both as plain integers and preserves what
+// was observed — see `AtspmEvent`. Intersection identifier and timestamp are
+// carried by the outer envelope (`IntersectionUpdate` for single events,
+// `CompactEventBatch` for batched transport).
 //
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -25,12 +27,19 @@ package openphase.v1;
 
 // Indiana Hi-Resolution event log entry.
 //
-// Two 8-bit fields per the IHR spec. Producers MUST constrain values to
-// 0-255; protobuf has no native uint8 so uint32 is used on the wire
-// (varint encoding: 1 byte for 0-127, 2 bytes for 128-255).
+// The IHR spec defines these as two 8-bit fields, and conforming producers
+// stay within 0-255. Deployed equipment frequently does not: codes above 255
+// and parameters far beyond it are observed in the field, and code 0 is
+// emitted despite the spec's own enumeration starting at 1.
+//
+// Both fields are therefore plain integers, and a producer emits what it
+// observed. A non-conforming value is evidence about the equipment that
+// produced it; clamping it into range, remapping it to a nearby code, or
+// dropping it destroys the only record that the non-conformance occurred.
+// Consumers that require conformance should validate and report, not repair.
 message AtspmEvent {
-  EventType code = 1;     // IHR Event Code (0-255)
-  uint32 param = 2;       // IHR Parameter (0-255) — semantics depend on `code`
+  uint32 code = 1;        // IHR event code as observed; see EventType for names
+  uint32 param = 2;       // IHR parameter as observed — semantics depend on `code`
 }
 
 // Indiana Hi-Resolution event log entry with a relative-time delta.
@@ -40,23 +49,26 @@ message AtspmEvent {
 // Absolute time = base_timestamp_ns + (offset_ms * 1_000_000).
 message CompactEvent {
   uint32 offset_ms = 1;   // Milliseconds from batch base_timestamp_ns (varint: 1-2 bytes for typical values)
-  EventType code = 2;     // Indiana Hi-Res Event Code (0-255)
-  uint32 param = 3;       // Indiana Hi-Res Parameter (0-255) — semantics depend on `code`
+  uint32 code = 2;        // IHR event code as observed; see EventType for names
+  uint32 param = 3;       // IHR parameter as observed — semantics depend on `code`
 }
 
 // Indiana Hi-Resolution Data Logger event codes (Purdue/INDOT 2012 spec).
 // Enum integer value == IHR event code. Names follow the spec verbatim
 // where possible.
 //
-// IHR code 0 ("Phase On NEMA") is intentionally omitted to preserve the
-// proto3 zero-value as `EVENT_TYPE_UNSPECIFIED`. Producers needing
-// Phase On NEMA semantics should emit Phase Begin Green (1) instead,
-// which carries the same operational meaning for ATSPM analytics.
+// This enumeration is a naming table for the codes the spec defines. It is
+// deliberately NOT the wire type of `AtspmEvent.code` or `CompactEvent.code`,
+// which are plain integers so that codes the spec does not define — which
+// deployed equipment emits — can be carried as observed rather than forced
+// into a name that does not fit.
+//
+// A consumer looking up a code that has no constant here has found an
+// undefined code, which is a fact worth reporting, not an error to correct.
 enum EventType {
-  EVENT_TYPE_UNSPECIFIED = 0;
-
-  // ===== Active Phase Events (1–12, 13–20 reserved) =====
+  // ===== Active Phase Events (0–12, 13–20 reserved) =====
   // `param` = phase number (1–16)
+  EVENT_PHASE_ON_NEMA = 0;                       // Phase on (NEMA); occupies the zero value
   EVENT_PHASE_BEGIN_GREEN = 1;                   // Solid or flashing green begins
   EVENT_PHASE_CHECK = 2;                         // Conflicting call registered (begins MAX timing)
   EVENT_PHASE_MIN_COMPLETE = 3;                  // Minimum-green timer expired
