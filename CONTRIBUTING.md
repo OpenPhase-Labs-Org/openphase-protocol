@@ -115,7 +115,7 @@ Once consensus is reached, the new file should:
 
 Vendor-specific event codes (typically in the IHR 200-255 range) and proprietary fields are explicitly **not allowed** in the canonical `EventType` enum or any other shared enum. Vendors who need to publish them have two options:
 
-1. **Use the raw escape hatch.** `AtspmEvent` carries `code` (typed enum) — for codes outside the enum, set `code = EVENT_TYPE_UNSPECIFIED` and document the convention out-of-band. (We may add an `extended_code` field for this in a future revision.)
+1. **Emit the code as observed.** `AtspmEvent.code` is a plain integer, not the `EventType` enum, so a code outside the canonical set needs no escape hatch — the producer sends the value it saw and documents its meaning out-of-band. Do not substitute a different code, and do not zero it: a value that cannot be named is still evidence of what the equipment emitted.
 2. **Open an issue proposing standardization.** If multiple vendors are using the same code for the same semantic, that's a candidate for the canonical enum.
 
 Vendors that fork and ship modified `openphase.v1` schemas are violating the MPL 2.0 license — see the [Breaking Change Policy](README.md#breaking-change-policy) in the README.

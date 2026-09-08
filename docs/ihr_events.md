@@ -8,12 +8,16 @@ Per the IHR spec, an event-log entry is exactly two 8-bit fields: Event Code and
 
 | Field | # | Type | Notes |
 |-------|---|------|-------|
-| `code` | 1 | EventType | IHR Event Code (0-255). Enum integer == IHR code. |
-| `param` | 2 | uint32 | IHR Parameter (0-255). Semantics depend on `code` — phase #, detector #, preempt #, overlap #, etc. |
+| `code` | 1 | uint32 | IHR Event Code as observed. See `EventType` for the names of codes the spec defines. |
+| `param` | 2 | uint32 | IHR Parameter as observed. Semantics depend on `code` — phase #, detector #, preempt #, overlap #, etc. |
 
-Producers MUST constrain `param` to 0-255 (protobuf has no uint8; varint-encoded 0-127 = 1 byte, 128-255 = 2 bytes).
+### Values outside the spec's range
 
-For Event Codes outside the standard `EventType` enumeration (vendor extensions in 200-255, or future spec additions), set `code = EVENT_TYPE_UNSPECIFIED` and put the raw integer in a wrapping `CompactEvent` or use the integer field number directly via `extended_event_code` if extending; this proto currently does not include an extended-code escape hatch on `AtspmEvent` itself — use the IHR enum.
+The IHR spec describes both fields as 8-bit, and a conforming producer stays within 0-255. Deployed equipment frequently does not: codes above 255 and parameters far beyond it occur in real data, and code 0 is emitted despite the spec's enumeration beginning at 1.
+
+Both fields are plain integers so that a producer can emit **what it observed**. A value outside the spec's range is evidence about the equipment that produced it. Clamping it into range, remapping it to a nearby code, or dropping it destroys the only record that the non-conformance happened, and does so silently — the resulting data looks conformant and is wrong.
+
+A consumer that requires conformance should **validate and report**, never repair. A code with no constant in `EventType` is an undefined code, which is a fact worth surfacing rather than an error to correct.
 
 ## `CompactEvent` — batched event with relative timing
 
@@ -22,20 +26,23 @@ Used inside `CompactEventBatch` (in `common.proto`) and `FaultSnapshot.recent_ev
 | Field | # | Type | Notes |
 |-------|---|------|-------|
 | `offset_ms` | 1 | uint32 | Milliseconds from the batch's `base_timestamp_ns` (varint, typically 1-2 bytes) |
-| `code` | 2 | EventType | Same as `AtspmEvent.code` |
+| `code` | 2 | uint32 | Same as `AtspmEvent.code` |
 | `param` | 3 | uint32 | Same as `AtspmEvent.param` |
 
 Absolute time = `base_timestamp_ns + (offset_ms * 1_000_000)`.
 
 ## `EventType` enum
 
-The integer value of every `EventType` constant equals its Indiana Hi-Res event code. No translation table is needed at decode time. Code 0 ("Phase On NEMA") is intentionally omitted to preserve the proto3 zero-value as `EVENT_TYPE_UNSPECIFIED`; producers needing Phase On NEMA semantics should emit Phase Begin Green (1) instead.
+The integer value of every `EventType` constant equals its Indiana Hi-Res event code. No translation table is needed at decode time.
 
-### Active Phase Events (1-12)
+`EventType` is a **naming table** for the codes the spec defines. It is deliberately not the type of `AtspmEvent.code` or `CompactEvent.code`, which are plain integers — so a code the spec does not define can still be carried. Because the enumeration names codes rather than typing a field, it has no "unspecified" state to reserve, and code 0 ("Phase On NEMA") occupies the zero value like any other code.
+
+### Active Phase Events (0-12)
 `param` = phase number (1-16).
 
 | Code | Name | Meaning |
 |------|------|---------|
+| 0 | `EVENT_PHASE_ON_NEMA` | Phase on (NEMA) |
 | 1 | `EVENT_PHASE_BEGIN_GREEN` | Solid or flashing green begins |
 | 2 | `EVENT_PHASE_CHECK` | Conflicting call registered (begins MAX timing) |
 | 3 | `EVENT_PHASE_MIN_COMPLETE` | Minimum-green timer expired |
